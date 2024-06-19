@@ -1,0 +1,29 @@
+<div class="w-full max-w-sm overflow-hidden bg-white rounded-lg shadow-lg">
+    <%= image_tag user.other_infos['photo'], alt: "User Photo", class: "object-cover object-center w-full h-56" %>
+
+    <div class="flex items-center px-6 py-3 bg-gray-900">
+        <h1 class="mx-3 text-lg font-semibold text-white">@<%= user.user_name %></h1>
+    </div>
+
+    <div class="px-6 py-4">
+        <h1 class="text-xl font-semibold text-gray-800"><%= user.name %></h1>
+
+        <p class="py-2 text-gray-700">Ruby On Rails Developer</p>
+
+        <div class="flex items-center mt-4 text-gray-700">
+            <div class='ml-0.5'><%= embedded_svg('phone') %></div>
+
+            <h1 class="px-2 text-sm"><%= user.phone %></h1>
+        </div>
+
+        <div class="flex items-center mt-4 text-gray-700">
+            <%= embedded_svg('location') %>
+            <h1 class="px-2 text-sm"><%= address(user) %></h1>
+        </div>
+
+        <div class="flex items-center mt-4 text-gray-700">
+            <%= embedded_svg('email') %>
+            <h1 class="px-2 text-sm"><%= user.email %></h1>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,5 @@
+<%= turbo_stream.replace('users', partial: 'users_list') %>
+
+<% if params[:commit] == 'X' %>
+  <%= turbo_stream.replace('search_form', partial: 'search_form') %>
+<% end %>

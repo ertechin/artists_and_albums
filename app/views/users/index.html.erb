@@ -1,13 +1,12 @@
 
 <div class="w-full">
-  <%# TODO: Search bar gelecek %>
+  <div id='search_form'>
+    <%= render 'search_form' %>
+  </div>
   <% if notice.present? %>
     <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
   <% end %>
-  
   <div id="users">
-    <% @users.each do |user| %>
-      <%= render 'user_list_section', user: user %>
-    <% end %>
+    <%= render 'users_list' %>
   </div>
 </div>

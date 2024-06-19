@@ -5,23 +5,33 @@ class UsersController < ApplicationController
     @users = User.all
   end
 
-  def show
-  end
+  def show; end
 
-  def edit
-  end
+  def edit; end
 
   def update
     respond_to do |format|
       if @user.update(user_params)
         format.html { redirect_to user_url(@user), notice: "User was successfully updated." }
-x      else
+      else
         format.html { render :edit, status: :unprocessable_entity }
       end
     end
   end
 
   #def sync; end
+
+  def search
+    @users = if params[:commit] == 'Search' && params[:query].present?
+      User.search_user_name(params[:query])
+    else
+      User.all
+    end
+
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
 
   private
 

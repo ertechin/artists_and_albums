@@ -6,14 +6,20 @@ class ImportExternalUsers
   class << self
     def import_artist_and_relations
       if check_servers_availability
-        create_users
+        begin
+          create_users
+          add_photos_to_users
+        rescue => e
+          Rails.logger.error "[IEU] => Error during import: #{e.message}"
+        end
       else
         Rails.logger.warn '[IEU] => Server is down, skipping import of external users.'
       end
     end
 
     def is_users_sync?
-      true
+      # this is a dummy method
+      User.any? ? true : false
     end
 
     private
@@ -45,9 +51,25 @@ class ImportExternalUsers
       end
     end
 
+    def add_photos_to_users
+      User.find_each do |user|
+        add_user_photo(user)
+      end
+    end
+
+    def add_user_photo(user)
+      response = get_request_to(USER_PHOTO_BASE_URL, 'id', user.external_id, 'info')
+      user_photo_info = JSON.parse(response.body)
+      user.other_infos['photo'] = user_photo_info['download_url']
+      user.save!
+    rescue StandardError => e
+      Rails.logger.error "[IEU] => An error occurred for user with id #{user.id}: #{e.message}"
+    end
+
     def cretae_users_releations; end
 
     def check_servers_availability
+      # USER_PHOTO_BASE_URL && USER_INFO_BASE_URL is available
       true
     end
 

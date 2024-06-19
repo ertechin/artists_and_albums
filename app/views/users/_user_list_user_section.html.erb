@@ -2,8 +2,7 @@
   <div class=" px-4 py-2 mx-auto">
     <div class="p-2 lg:w-full md:w-1/2 w-full">
       <div class="h-full flex items-center border-gray-200 border p-4 rounded-lg">
-        <%# TODO: add user image %>
-        <img alt="team" class="w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4" src="https://dummyimage.com/88x80">
+        <%= image_tag user.other_infos['photo'], alt: "User Photo", class: "w-16 h-16 bg-gray-100 object-cover object-center flex-shrink-0 rounded-full mr-4" %>
         <div class="flex-grow">
           <p class="text-gray-500"><%= user.name %></p>
           <h2 class="text-gray-900 title-font font-medium">@<%= user.user_name %></h2>

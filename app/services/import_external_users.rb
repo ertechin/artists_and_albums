@@ -8,7 +8,8 @@ class ImportExternalUsers
       if check_servers_availability
         begin
           create_users
-          add_photos_to_users
+          process_all_users_with(:add_photo)
+          process_all_users_with(:create_albums)
         rescue => e
           Rails.logger.error "[IEU] => Error during import: #{e.message}"
         end
@@ -34,30 +35,28 @@ class ImportExternalUsers
     end
 
     def create_users
-      users = get_users
-      users.each do |user|
+      get_users.each do |user|
         begin
-          User.create!(
-            external_id: user['id'],
-            name: user['name'],
-            email: user['email'],
-            user_name: user['username'],
-            phone: user['phone'],
-            other_infos: user.slice('address', 'website', 'company')
-          )
+          User.create!(user_data(user))
         rescue ActiveRecord::RecordInvalid => e
           Rails.logger.error "[IEU] => Failed to create user with id #{user['id']}: #{e.message}"
         end
       end
     end
 
-    def add_photos_to_users
-      User.find_each do |user|
-        add_user_photo(user)
-      end
+    def user_data(user)
+      {
+        external_id: user['id'], name: user['name'], email: user['email'],
+        user_name: user['username'], phone: user['phone'],
+        other_infos: user.slice('address', 'website', 'company')
+      }
     end
 
-    def add_user_photo(user)
+    def process_all_users_with(method)
+      User.find_each { |user| ImportExternalUsers.send(method, user) }
+    end
+
+    def add_photo(user)
       response = get_request_to(USER_PHOTO_BASE_URL, 'id', user.external_id, 'info')
       user_photo_info = JSON.parse(response.body)
       user.other_infos['photo'] = user_photo_info['download_url']
@@ -66,7 +65,17 @@ class ImportExternalUsers
       Rails.logger.error "[IEU] => An error occurred for user with id #{user.id}: #{e.message}"
     end
 
-    def cretae_users_releations; end
+    def create_albums(user)
+      response = get_request_to(USER_INFO_BASE_URL, 'albums')
+      albums = JSON.parse(response.body)
+      user_albums = albums.select { |album| album["userId"] == user.external_id }
+      user_albums.each do |album|
+        user.albums.create!(
+          external_id: album['id'],
+          title: album['title']
+        )
+      end
+    end
 
     def check_servers_availability
       # USER_PHOTO_BASE_URL && USER_INFO_BASE_URL is available

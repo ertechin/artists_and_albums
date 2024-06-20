@@ -9,5 +9,6 @@ class CreateUsers < ActiveRecord::Migration[7.1]
       t.jsonb :other_infos, default: {}
       t.timestamps
     end
+    add_index :users, :external_id, unique: true
   end
 end

@@ -10,9 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_19_224428) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_20_204006) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "album_details", force: :cascade do |t|
+    t.bigint "external_id", null: false
+    t.text "description"
+    t.string "url"
+    t.string "thumbnail_url"
+    t.bigint "album_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["album_id"], name: "index_album_details_on_album_id"
+    t.index ["external_id"], name: "index_album_details_on_external_id", unique: true
+  end
 
   create_table "albums", force: :cascade do |t|
     t.bigint "external_id", null: false
@@ -36,5 +48,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_19_224428) do
     t.index ["external_id"], name: "index_users_on_external_id", unique: true
   end
 
+  add_foreign_key "album_details", "albums"
   add_foreign_key "albums", "users"
 end

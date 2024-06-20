@@ -9,5 +9,6 @@ Rails.application.routes.draw do
   root "users#index"
   resources :users, only: %i[index show edit update] do 
     post :search, on: :collection
+    get :album_detail, on: :member
   end
 end

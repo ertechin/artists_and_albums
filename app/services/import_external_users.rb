@@ -10,6 +10,7 @@ class ImportExternalUsers
           create_users
           process_all_users_with(:add_photo)
           process_all_users_with(:create_albums)
+          create_album_details
         rescue => e
           Rails.logger.error "[IEU] => Error during import: #{e.message}"
         end
@@ -74,6 +75,22 @@ class ImportExternalUsers
           external_id: album['id'],
           title: album['title']
         )
+      end
+    end
+
+    def create_album_details
+      response = get_request_to(USER_INFO_BASE_URL, 'photos')
+      albums_details = JSON.parse(response.body)
+      Album.find_each do |album|
+        album_details = albums_details.select { |ad| ad["albumId"] == album.external_id }
+        album_details.each do |album_detail|
+          album.album_details.create!(
+            external_id: album_detail['id'],
+            url: album_detail['url'],
+            thumbnail_url: album_detail['thumbnailUrl'],
+            description: album_detail['title']
+          )
+        end
       end
     end
 

@@ -19,6 +19,10 @@ class UsersController < ApplicationController
     end
   end
 
+  def album_detail
+    @album_detail = AlbumDetail.find(params[:album_detail_id])
+  end
+
   #def sync; end
 
   def search

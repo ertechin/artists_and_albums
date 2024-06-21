@@ -5,10 +5,12 @@ Data is retrieved from an API before the application starts with the import serv
 
 [LIVE PROJECT (PRODUCTION)](https://artistsandalbums-production.up.railway.app/).
 
-<img src="https://i.hizliresim.com/dtnchmk.png" alt="" width="180"/>
-<img src="https://i.hizliresim.com/pjevzvo.png" alt="" width="180"/>
-<img src="https://i.hizliresim.com/4se5u4j.png" alt="" width="180"/>
-<img src="https://i.hizliresim.com/3zsarjc.png" alt="" width="180"/>
+<p float="left">
+  <img src="https://i.hizliresim.com/dtnchmk.png" alt="" width="180"/> 
+  <img src="https://i.hizliresim.com/pjevzvo.png" alt="" width="180"/>
+  <img src="https://i.hizliresim.com/4se5u4j.png" alt="" width="180"/>
+  <img src="https://i.hizliresim.com/3zsarjc.png" alt="" width="180"/>
+</p>
 
 ## Table of Contents
 

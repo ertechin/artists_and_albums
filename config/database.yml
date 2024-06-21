@@ -79,6 +79,4 @@ test:
 #
 production:
   <<: *default
-  database: artists_and_albums_production
-  username: artists_and_albums
-  password: <%= ENV["ARTISTS_AND_ALBUMS_DATABASE_PASSWORD"] %>
+  url: <%= ENV["DATABASE_URL"] %>
